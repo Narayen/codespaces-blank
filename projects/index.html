@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Zen Flip Clock</title>
+
+	<style>
+		/* =========================   THEME VARIABLES.  ========================= */
+		:root {
+			--bg: #f5f5f5;
+			--text: #111;
+			--card: #ffffff;
+		}
+
+		body.dark {
+			--bg: #111;
+			--text: #f5f5f5;
+			--card: #1a1a1a;
+		}
+
+		/* =========================   GLOBAL.     ======================== */
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			font-family: system-ui, sans-serif;
+		}
+
+		body {
+			height: 100vh;
+			background: var(--bg);
+			color: var(--text);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			transition: 0.3s;
+		}
+
+		/* =========================
+   CLOCK CONTAINER
+========================= */
+		.clock {
+			display: flex;
+			gap: 10px;
+		}
+
+		/* =========================
+   FLIP CARD
+========================= */
+		.flip {
+			position: relative;
+			width: clamp(50px, 10vw, 100px);
+			height: clamp(70px, 14vw, 140px);
+			perspective: 1000px;
+		}
+
+		.card {
+			width: 100%;
+			height: 100%;
+			background: var(--card);
+			border-radius: 10px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: clamp(2rem, 6vw, 4rem);
+			font-weight: 300;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		}
+
+		/* =========================
+   FLIP ANIMATION
+========================= */
+		.flip.animate .card {
+			animation: flip 0.4s ease;
+		}
+
+		@keyframes flip {
+			0% {
+				transform: rotateX(0deg);
+			}
+
+			50% {
+				transform: rotateX(-90deg);
+			}
+
+			100% {
+				transform: rotateX(0deg);
+			}
+		}
+
+		/* =========================
+   COLON
+========================= */
+		.colon {
+			font-size: clamp(2rem, 6vw, 4rem);
+			display: flex;
+			align-items: center;
+		}
+
+		/* =========================
+   CONTROLS
+========================= */
+		.controls {
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			display: flex;
+			gap: 10px;
+		}
+
+		.icon-btn {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			background: rgba(0, 0, 0, 0.05);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+		}
+
+		/* Dark mode icon bg */
+		body.dark .icon-btn {
+			background: rgba(255, 255, 255, 0.1);
+		}
+
+		.icon {
+			font-size: 18px;
+		}
+
+		/* Responsive tweak */
+		@media (max-width: 500px) {
+			.controls {
+				bottom: 15px;
+				right: 15px;
+			}
+		}
+	</style>
+</head>
+
+<body>
+
+	<!-- =========================
+     CLOCK
+========================= -->
+	<div class="clock" id="clock"></div>
+
+	<!-- =========================
+     CONTROLS
+========================= -->
+	<div class="controls">
+		<div class="icon-btn" id="themeToggle"><span id="themeIcon">☀️</span></div>
+		<div class="icon-btn" id="secondsToggle">✔️</div>
+		<div class="icon-btn" id="fullscreenToggle">⛶</div>
+	</div>
+
+	<script>
+		/* =========================
+		   STATE
+		========================= */
+		let showSeconds = false;
+		let prevTime = "";
+
+		/* =========================
+		   CREATE DIGIT ELEMENT
+		========================= */
+		function createDigit(value) {
+			const flip = document.createElement("div");
+			flip.className = "flip";
+
+			const card = document.createElement("div");
+			card.className = "card";
+			card.textContent = value;
+
+			flip.appendChild(card);
+			return flip;
+		}
+
+		/* =========================
+		   RENDER CLOCK
+		========================= */
+		function render(timeStr) {
+			const container = document.getElementById("clock");
+
+			// First render
+			if (!container.children.length) {
+				[...timeStr].forEach(char => {
+					if (char === ":") {
+						const colon = document.createElement("div");
+						colon.className = "colon";
+						colon.textContent = ":";
+						container.appendChild(colon);
+					} else {
+						container.appendChild(createDigit(char));
+					}
+				});
+				return;
+			}
+
+			// Update digits with flip
+			let index = 0;
+			[...timeStr].forEach((char, i) => {
+				if (char === ":") return;
+
+				const flip = container.children[i];
+				const card = flip.querySelector(".card");
+
+				if (card.textContent !== char) {
+					card.textContent = char;
+					flip.classList.add("animate");
+
+					setTimeout(() => flip.classList.remove("animate"), 400);
+				}
+			});
+		}
+
+		/* =========================
+		   CLOCK UPDATE
+		========================= */
+		function updateClock() {
+			const now = new Date();
+
+			const h = String(now.getHours()).padStart(2, "0");
+			const m = String(now.getMinutes()).padStart(2, "0");
+			const s = String(now.getSeconds()).padStart(2, "0");
+
+			const timeStr = showSeconds ? `${h}:${m}:${s}` : `${h}:${m}`;
+
+			if (timeStr !== prevTime) {
+				render(timeStr);
+				prevTime = timeStr;
+			}
+		}
+
+		setInterval(updateClock, 1000);
+		updateClock();
+
+		/* =========================
+		   THEME TOGGLE
+		========================= */
+		const themeIcon = document.getElementById("themeIcon");
+
+		document.getElementById("themeToggle").onclick = () => {
+			document.body.classList.toggle("dark");
+
+			themeIcon.textContent =
+				document.body.classList.contains("dark") ? "🌙" : "☀️";
+		};
+
+		/* =========================
+		   SECONDS TOGGLE
+		========================= */
+		document.getElementById("secondsToggle").onclick = () => {
+			showSeconds = !showSeconds;
+			prevTime = "";
+			document.getElementById("clock").innerHTML = "";
+			updateClock(); // instant update
+		};
+
+		/* =========================
+		   FULLSCREEN
+		========================= */
+		document.getElementById("fullscreenToggle").onclick = () => {
+			if (!document.fullscreenElement) {
+				document.documentElement.requestFullscreen();
+			} else {
+				document.exitFullscreen();
+			}
+		};
+	</script>
+
+</body>
+
+</html>

@@ -3,274 +3,173 @@
 
 <head>
 	<meta charset="UTF-8">
+	<title>Your Name | Profile</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Zen Flip Clock</title>
-
 	<style>
-		/* =========================   THEME VARIABLES.  ========================= */
 		:root {
-			--bg: #f5f5f5;
-			--text: #111;
-			--card: #ffffff;
+			--bg: #0b0f1a;
+			--card: #111827;
+			--text: #e5e7eb;
+			--muted: #9ca3af;
+			--accent: #ffffff;
+			--border: rgba(255, 255, 255, 0.08);
 		}
 
-		body.dark {
-			--bg: #111;
-			--text: #f5f5f5;
-			--card: #1a1a1a;
-		}
-
-		/* =========================   GLOBAL.     ======================== */
 		* {
 			margin: 0;
 			padding: 0;
 			box-sizing: border-box;
-			font-family: system-ui, sans-serif;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 		}
 
 		body {
-			height: 100vh;
 			background: var(--bg);
 			color: var(--text);
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			transition: 0.3s;
+			line-height: 1.6;
+			-webkit-font-smoothing: antialiased;
 		}
 
-		/* =========================
-   CLOCK CONTAINER
-========================= */
-		.clock {
-			display: flex;
-			gap: 10px;
+		header {
+			text-align: center;
+			padding: 100px 20px 60px;
 		}
 
-		/* =========================
-   FLIP CARD
-========================= */
-		.flip {
-			position: relative;
-			width: clamp(50px, 10vw, 100px);
-			height: clamp(70px, 14vw, 140px);
-			perspective: 1000px;
+		header h1 {
+			font-size: 2.2rem;
+			font-weight: 500;
+			letter-spacing: -0.5px;
+		}
+
+		header p {
+			margin-top: 10px;
+			color: var(--muted);
+			font-size: 1rem;
+		}
+
+		.container {
+			max-width: 700px;
+			margin: auto;
+			padding: 0 20px 60px;
 		}
 
 		.card {
-			width: 100%;
-			height: 100%;
-			background: var(--card);
-			border-radius: 10px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: clamp(2rem, 6vw, 4rem);
-			font-weight: 300;
-			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+			background: transparent;
+			padding: 24px 0;
+			border-bottom: 1px solid var(--border);
 		}
 
-		/* =========================
-   FLIP ANIMATION
-========================= */
-		.flip.animate .card {
-			animation: flip 0.4s ease;
+		.card:last-child {
+			border-bottom: none;
 		}
 
-		@keyframes flip {
-			0% {
-				transform: rotateX(0deg);
-			}
-
-			50% {
-				transform: rotateX(-90deg);
-			}
-
-			100% {
-				transform: rotateX(0deg);
-			}
+		h2 {
+			font-size: 0.9rem;
+			font-weight: 600;
+			letter-spacing: 1px;
+			text-transform: uppercase;
+			color: var(--muted);
+			margin-bottom: 12px;
 		}
 
-		/* =========================
-   COLON
-========================= */
-		.colon {
-			font-size: clamp(2rem, 6vw, 4rem);
-			display: flex;
-			align-items: center;
+		p,
+		li {
+			font-size: 0.95rem;
+			color: var(--text);
 		}
 
-		/* =========================
-   CONTROLS
-========================= */
-		.controls {
-			position: fixed;
-			bottom: 20px;
-			right: 20px;
-			display: flex;
-			gap: 10px;
+		ul {
+			list-style: none;
 		}
 
-		.icon-btn {
-			width: 40px;
-			height: 40px;
+		ul li {
+			margin-bottom: 8px;
+			position: relative;
+			padding-left: 14px;
+		}
+
+		ul li::before {
+			content: "";
+			width: 4px;
+			height: 4px;
+			background: var(--muted);
+			position: absolute;
+			left: 0;
+			top: 8px;
 			border-radius: 50%;
-			background: rgba(0, 0, 0, 0.05);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			cursor: pointer;
 		}
 
-		/* Dark mode icon bg */
-		body.dark .icon-btn {
-			background: rgba(255, 255, 255, 0.1);
+		.links {
+			margin-top: 10px;
 		}
 
-		.icon {
-			font-size: 18px;
+		.links a {
+			display: inline-block;
+			margin-right: 16px;
+			color: var(--muted);
+			text-decoration: none;
+			font-size: 0.9rem;
+			transition: opacity 0.2s ease;
 		}
 
-		/* Responsive tweak */
-		@media (max-width: 500px) {
-			.controls {
-				bottom: 15px;
-				right: 15px;
+		.links a:hover {
+			opacity: 0.6;
+		}
+
+		footer {
+			text-align: center;
+			padding: 40px 20px;
+			color: var(--muted);
+			font-size: 0.8rem;
+		}
+
+		@media (max-width: 600px) {
+			header {
+				padding: 80px 20px 40px;
+			}
+
+			header h1 {
+				font-size: 1.8rem;
 			}
 		}
 	</style>
 </head>
 
 <body>
+	<header>
+		<h1>Your Name</h1>
+		<p>Web Developer · Designer · Creator</p>
+	</header>
+	<div class="container">
+		<div class="card">
+			<h2>About</h2>
+			<p>
+				I build clean and minimal web experiences with a focus on simplicity, usability, and performance.
+			</p>
+		</div>
 
-	<!-- =========================
-     CLOCK
-========================= -->
-	<div class="clock" id="clock"></div>
+		<div class="card">
+			<h2>Projects</h2>
+			<ul>
+				<li>Project One — Short description</li>
+				<li>Project Two — Short description</li>
+				<li>Project Three — Short description</li>
+			</ul>
+		</div>
 
-	<!-- =========================
-     CONTROLS
-========================= -->
-	<div class="controls">
-		<div class="icon-btn" id="themeToggle"><span id="themeIcon">☀️</span></div>
-		<div class="icon-btn" id="secondsToggle">✔️</div>
-		<div class="icon-btn" id="fullscreenToggle">⛶</div>
+		<div class="card">
+			<h2>Contact</h2>
+			<p>your@email.com</p>
+			<div class="links">
+				<a href="#">GitHub</a>
+				<a href="#">LinkedIn</a>
+				<a href="#">Twitter</a>
+			</div>
+		</div>
+
 	</div>
-
-	<script>
-		/* =========================
-		   STATE
-		========================= */
-		let showSeconds = false;
-		let prevTime = "";
-
-		/* =========================
-		   CREATE DIGIT ELEMENT
-		========================= */
-		function createDigit(value) {
-			const flip = document.createElement("div");
-			flip.className = "flip";
-
-			const card = document.createElement("div");
-			card.className = "card";
-			card.textContent = value;
-
-			flip.appendChild(card);
-			return flip;
-		}
-
-		/* =========================
-		   RENDER CLOCK
-		========================= */
-		function render(timeStr) {
-			const container = document.getElementById("clock");
-
-			// First render
-			if (!container.children.length) {
-				[...timeStr].forEach(char => {
-					if (char === ":") {
-						const colon = document.createElement("div");
-						colon.className = "colon";
-						colon.textContent = ":";
-						container.appendChild(colon);
-					} else {
-						container.appendChild(createDigit(char));
-					}
-				});
-				return;
-			}
-
-			// Update digits with flip
-			let index = 0;
-			[...timeStr].forEach((char, i) => {
-				if (char === ":") return;
-
-				const flip = container.children[i];
-				const card = flip.querySelector(".card");
-
-				if (card.textContent !== char) {
-					card.textContent = char;
-					flip.classList.add("animate");
-
-					setTimeout(() => flip.classList.remove("animate"), 400);
-				}
-			});
-		}
-
-		/* =========================
-		   CLOCK UPDATE
-		========================= */
-		function updateClock() {
-			const now = new Date();
-
-			const h = String(now.getHours()).padStart(2, "0");
-			const m = String(now.getMinutes()).padStart(2, "0");
-			const s = String(now.getSeconds()).padStart(2, "0");
-
-			const timeStr = showSeconds ? `${h}:${m}:${s}` : `${h}:${m}`;
-
-			if (timeStr !== prevTime) {
-				render(timeStr);
-				prevTime = timeStr;
-			}
-		}
-
-		setInterval(updateClock, 1000);
-		updateClock();
-
-		/* =========================
-		   THEME TOGGLE
-		========================= */
-		const themeIcon = document.getElementById("themeIcon");
-
-		document.getElementById("themeToggle").onclick = () => {
-			document.body.classList.toggle("dark");
-
-			themeIcon.textContent =
-				document.body.classList.contains("dark") ? "🌙" : "☀️";
-		};
-
-		/* =========================
-		   SECONDS TOGGLE
-		========================= */
-		document.getElementById("secondsToggle").onclick = () => {
-			showSeconds = !showSeconds;
-			prevTime = "";
-			document.getElementById("clock").innerHTML = "";
-			updateClock(); // instant update
-		};
-
-		/* =========================
-		   FULLSCREEN
-		========================= */
-		document.getElementById("fullscreenToggle").onclick = () => {
-			if (!document.fullscreenElement) {
-				document.documentElement.requestFullscreen();
-			} else {
-				document.exitFullscreen();
-			}
-		};
-	</script>
-
+	<footer>
+		© 2026 Your Name
+	</footer>
 </body>
 
 </html>
